@@ -4,9 +4,9 @@ import cs.ut.ee.services.configuration.Configuration
 import cs.ut.ee.services.configuration.Configuration.CONFIG_PROPERTY
 import cs.ut.ee.services.controllers.Login
 import cs.ut.ee.services.database.DbConnection
-import cs.ut.ee.services.entity.User
 import cs.ut.ee.services.entity.Users
-import org.jetbrains.exposed.sql.Database
+import cs.ut.ee.services.exceptions.FailedAuthenticationException
+import cs.ut.ee.services.token.UserToken
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -15,7 +15,8 @@ import kotlin.test.assertEquals
 
 class UserServiceTest {
 
-    @Test fun loginTest() {
+    @Test
+    fun loginTest() {
         System.setProperty(CONFIG_PROPERTY, System.getProperty("user.dir") + "/src/main/resources/env/dev.yaml")
         System.setProperty("log4j.configurationFile", System.getProperty("user.dir") + "/src/main/resources/env/log4j2.yaml")
 
@@ -29,15 +30,14 @@ class UserServiceTest {
         transaction {
             SchemaUtils.create(Users)
 
-            val id = Users.insert {
+            Users.insert {
                 it[username] = usrName
                 it[password] = usrPwd
                 it[role] = usrRole
-            } get Users.id ?: throw NullPointerException()
+            }
 
-            val user = User.findById(id) ?: throw NullPointerException()
-
-            val usr = Login(user).login()
+            val token = UserToken(username = usrName, password = usrPwd)
+            val usr = Login(token).login()
 
             assertEquals(usrName, usr.username)
             assertEquals(usrPwd, usr.password)
@@ -47,4 +47,20 @@ class UserServiceTest {
         }
 
     }
+
+    @Test(expected = FailedAuthenticationException::class)
+    fun loginFailTest() {
+        System.setProperty(CONFIG_PROPERTY, System.getProperty("user.dir") + "/src/main/resources/env/dev.yaml")
+        System.setProperty("log4j.configurationFile", System.getProperty("user.dir") + "/src/main/resources/env/log4j2.yaml")
+
+        Configuration.setUp()
+        DbConnection.connect()
+
+        val usrName = "john"
+        val usrPwd = "doe"
+
+        val token = UserToken(username = usrName, password = usrPwd)
+        Login(token).login()
+    }
+
 }

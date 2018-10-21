@@ -1,7 +1,7 @@
 package cs.ut.ee.services.endpoints
 
 import cs.ut.ee.services.controllers.Login
-import cs.ut.ee.services.entity.User
+import cs.ut.ee.services.token.UserToken
 import io.ktor.application.call
 import io.ktor.request.receive
 import io.ktor.routing.Routing
@@ -12,7 +12,7 @@ fun Routing.userService() {
 
     route("/users") {
         post("/login") {
-            val ctx = call.receive<User>()
+            val ctx = call.receive<UserToken>()
             Login(ctx).login()
         }
     }
