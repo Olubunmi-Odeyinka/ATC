@@ -19,11 +19,7 @@ class UserServiceTest {
 
     @Test
     fun loginTest() {
-        System.setProperty(CONFIG_PROPERTY, System.getProperty("user.dir") + "/src/main/resources/env/dev.yaml")
-        System.setProperty("log4j.configurationFile", System.getProperty("user.dir") + "/src/main/resources/env/log4j2.yaml")
-
-        Configuration.setUp()
-        DbConnection.connect()
+        inject()
 
         val usrName = "john"
         val usrPwd = "doe"
@@ -52,11 +48,7 @@ class UserServiceTest {
 
     @Test(expected = FailedAuthenticationException::class)
     fun loginFailTest() {
-        System.setProperty(CONFIG_PROPERTY, System.getProperty("user.dir") + "/src/main/resources/env/dev.yaml")
-        System.setProperty("log4j.configurationFile", System.getProperty("user.dir") + "/src/main/resources/env/log4j2.yaml")
-
-        Configuration.setUp()
-        DbConnection.connect()
+        inject()
 
         val usrName = "john"
         val usrPwd = "doe"
@@ -67,11 +59,25 @@ class UserServiceTest {
 
     @Test
     fun createUserTest() {
-        val createToken = CreateToken("john", "DoeDoeDoe1", "DoeDoeDoe1")
-        val user = NewUser(createToken).work()
+        inject()
 
-        assertEquals(createToken.username, user.username)
-        assertEquals(createToken.password, user.password)
+        transaction {
+            DbConnection.createTable(Users)
+            val createToken = CreateToken("john", "DoeDoeDoe1", "DoeDoeDoe1")
+            val user = NewUser(createToken).work()
+
+            assertEquals(createToken.username, user.username)
+            assertEquals(createToken.password, user.password)
+
+            rollback()
+        }
     }
 
+    private fun inject() {
+        System.setProperty(CONFIG_PROPERTY, "env/dev.yaml")
+        System.setProperty("log4j.configurationFile", "env/log4j2.yaml")
+
+        Configuration.setUp()
+        DbConnection.connect()
+    }
 }

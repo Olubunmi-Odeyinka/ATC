@@ -7,3 +7,9 @@ database:
 
   source: jdbc:postgresql://localhost:5432/atc
   driver: org.postgresql.Driver
+
+security:
+  password:
+    length: 8
+  defaults:
+    role: inactive
