@@ -1,7 +1,6 @@
-package cs.ut.ee
+package cs.ut.ee.services
 
-import io.ktor.response.respond
-import io.ktor.routing.get
+import cs.ut.ee.services.endpoints.userService
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.tomcat.Tomcat
@@ -11,9 +10,7 @@ object Server {
     fun main(args: Array<String>) {
         embeddedServer(Tomcat, 8080) {
             routing {
-                get("/hello/{name}") {
-                    context.respond("Hello, ${context.parameters["name"] ?: "world!"}")
-                }
+                userService()
             }
         }.start(wait = true)
     }

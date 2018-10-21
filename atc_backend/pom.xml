@@ -19,7 +19,7 @@
         <jackson.version>2.9.6</jackson.version>
         <log4j2.version>2.11.0</log4j2.version>
         <mvn.jar.version>3.1.0</mvn.jar.version>
-        <main.class>cs.ut.ee.Server</main.class>
+        <main.class>cs.ut.ee.services.Server</main.class>
     </properties>
 
     <repositories>
