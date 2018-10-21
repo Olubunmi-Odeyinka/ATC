@@ -11,7 +11,7 @@ object Users: IntIdTable() {
     val role = varchar("role", 50).nullable()
 }
 
-class User(id: EntityID<Int>) : IntEntity(id) {
+data class User(val innerId: EntityID<Int>) : IntEntity(innerId) {
     val username by Users.username
     val password by Users.password
     val role by Users.role
