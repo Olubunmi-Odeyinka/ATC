@@ -5,9 +5,11 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.util.Supplier
 import java.io.File
+import java.nio.file.Path
+import java.nio.file.Paths
 
 object Configuration {
-    const val CONFIG_PROPERTY = "atc_env.config"
+    const val CONFIG_PROPERTY = "atc.env"
 
     private val log = LogManager.getLogger(Configuration::class.java)
     private val map = mutableMapOf<String, Any>()
@@ -20,10 +22,14 @@ object Configuration {
         log.debug("Cleared configuration map")
 
         log.debug("Looking for system property => {}", CONFIG_PROPERTY)
-        val configFile = System.getProperty(CONFIG_PROPERTY)
+        val propValue = System.getProperty(CONFIG_PROPERTY)
+        val configFile = Paths.get(propValue).toFile()
         log.debug("Configuration file => {}", configFile)
 
-        val m: Map<*, *> = mapper.readValue(File(configFile), Map::class.java)
+        val m: Map<*, *> = mapper.readValue(
+                if (configFile.exists()) configFile
+                else File(javaClass.classLoader.getResource(propValue).file),
+                Map::class.java)
         m.forEach { k, v ->
             if (k is String && v != null) {
                 map[k] = v
