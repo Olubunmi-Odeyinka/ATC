@@ -5,9 +5,15 @@ import com.fasterxml.jackson.datatype.joda.JodaModule
 import cs.ut.ee.services.configuration.Configuration
 import cs.ut.ee.services.database.DbConnection
 import cs.ut.ee.services.endpoints.userService
+import cs.ut.ee.services.exceptions.FailedAuthenticationException
+import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.features.ContentNegotiation
+import io.ktor.features.StatusPages
+import io.ktor.http.HttpStatusCode
 import io.ktor.jackson.jackson
+import io.ktor.response.respond
+import io.ktor.routing.route
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.tomcat.Tomcat
@@ -29,8 +35,16 @@ object Server {
                 }
             }
 
+            install(StatusPages) {
+                exception<FailedAuthenticationException> {
+                    call.respond(HttpStatusCode.Unauthorized, "Invalid username or password")
+                }
+            }
+
             routing {
-                userService()
+                route("api") {
+                    userService()
+                }
             }
         }.start(wait = true)
     }

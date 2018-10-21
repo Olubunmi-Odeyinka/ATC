@@ -7,7 +7,7 @@ import org.apache.logging.log4j.util.Supplier
 import java.io.File
 
 object Configuration {
-    const val CONFIG_PROPERTY = "env.config"
+    const val CONFIG_PROPERTY = "atc_env.config"
 
     private val log = LogManager.getLogger(Configuration::class.java)
     private val map = mutableMapOf<String, Any>()
