@@ -8,6 +8,7 @@ import cs.ut.ee.services.exceptions.PasswordsDoNotMatch
 import cs.ut.ee.services.security.checks.CapitalizedCheck
 import cs.ut.ee.services.security.checks.ContainsNumeric
 import cs.ut.ee.services.security.checks.LengthCheck
+import cs.ut.ee.services.security.checks.UniqueUsername
 import cs.ut.ee.services.token.CreateToken
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -17,7 +18,8 @@ class NewUser(private val token: CreateToken) : SingleStepOperation<User>() {
     private val checks = listOf(
             CapitalizedCheck,
             ContainsNumeric,
-            LengthCheck)
+            LengthCheck,
+            UniqueUsername)
 
     override fun work(): User {
         log.debug("Request to create new principal => $token")
