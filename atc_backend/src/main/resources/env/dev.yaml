@@ -1,0 +1,9 @@
+server:
+  port: 8080
+
+database:
+  user: postgres
+  password: postgres
+
+  source: jdbc:postgresql://localhost:5432/atc
+  driver: org.postgresql.Driver

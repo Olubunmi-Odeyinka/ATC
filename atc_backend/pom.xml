@@ -19,7 +19,7 @@
         <jackson.version>2.9.6</jackson.version>
         <log4j2.version>2.11.0</log4j2.version>
         <mvn.jar.version>3.1.0</mvn.jar.version>
-        <main.class>cs.ut.ee.Server</main.class>
+        <main.class>cs.ut.ee.services.Server</main.class>
     </properties>
 
     <repositories>
@@ -154,6 +154,19 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>2.23.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.nhaarman</groupId>
+            <artifactId>mockito-kotlin</artifactId>
+            <version>1.6.0</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
