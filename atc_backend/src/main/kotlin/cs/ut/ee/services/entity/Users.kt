@@ -6,7 +6,7 @@ import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.IntIdTable
 
 object Users: IntIdTable() {
-    val username = varchar("username", 50)
+    val username = varchar("username", 50).uniqueIndex()
     val password = varchar("password", 50)
     val role = varchar("role", 50).nullable()
 }

@@ -21,7 +21,6 @@ class UserServiceTest {
 
         Configuration.setUp()
         DbConnection.connect()
-        Database
 
         val usrName = "john"
         val usrPwd = "doe"
