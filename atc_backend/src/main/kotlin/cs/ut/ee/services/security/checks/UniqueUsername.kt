@@ -2,7 +2,6 @@ package cs.ut.ee.services.security.checks
 
 import cs.ut.ee.services.entity.Users
 import cs.ut.ee.services.security.Check
-import org.apache.tomcat.jni.User
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
