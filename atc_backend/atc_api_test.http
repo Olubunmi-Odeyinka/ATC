@@ -14,7 +14,16 @@ Content-Type: application/json
 }
 
 
-
 ###
 
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "username": "john",
+  "password": "Doe1",
+  "confirmPassword": "Doe1"
+}
+
+###
 ###

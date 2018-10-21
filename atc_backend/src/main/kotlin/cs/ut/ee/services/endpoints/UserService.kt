@@ -1,7 +1,9 @@
 package cs.ut.ee.services.endpoints
 
 import cs.ut.ee.services.controllers.Login
-import cs.ut.ee.services.token.UserToken
+import cs.ut.ee.services.controllers.NewUser
+import cs.ut.ee.services.token.CreateToken
+import cs.ut.ee.services.token.LoginToken
 import io.ktor.application.call
 import io.ktor.request.receive
 import io.ktor.routing.Route
@@ -12,8 +14,13 @@ fun Route.userService() {
 
     route("/users") {
         post("/login") {
-            val ctx = call.receive<UserToken>()
-            Login(ctx).login()
+            val ctx = call.receive<LoginToken>()
+            Login(ctx).work()
+        }
+
+        post {
+            val ctx = call.receive<CreateToken>()
+            NewUser(ctx).work()
         }
     }
 

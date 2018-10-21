@@ -3,16 +3,14 @@ package cs.ut.ee.services.controllers
 import cs.ut.ee.services.entity.User
 import cs.ut.ee.services.entity.Users
 import cs.ut.ee.services.exceptions.FailedAuthenticationException
-import cs.ut.ee.services.token.UserToken
-import org.apache.logging.log4j.LogManager
+import cs.ut.ee.services.token.LoginToken
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class Login(private val principal: UserToken) {
-    private val log = LogManager.getLogger(Login::class.java)
+class Login(private val principal: LoginToken) : SingleStepOperation<User>() {
 
-    fun login(): User {
+    override fun work(): User {
         log.debug("Querying user => ${principal.username}")
 
         return transaction {

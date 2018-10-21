@@ -1,3 +1,5 @@
 package cs.ut.ee.services.exceptions
 
-class FailedAuthenticationException : Exception()
+import io.ktor.http.HttpStatusCode
+
+class FailedAuthenticationException : ATCException(HttpStatusCode.Unauthorized, "Invalid username or password")

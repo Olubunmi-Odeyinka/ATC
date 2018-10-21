@@ -5,12 +5,11 @@ import com.fasterxml.jackson.datatype.joda.JodaModule
 import cs.ut.ee.services.configuration.Configuration
 import cs.ut.ee.services.database.DbConnection
 import cs.ut.ee.services.endpoints.userService
-import cs.ut.ee.services.exceptions.FailedAuthenticationException
+import cs.ut.ee.services.exceptions.ATCException
 import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.StatusPages
-import io.ktor.http.HttpStatusCode
 import io.ktor.jackson.jackson
 import io.ktor.response.respond
 import io.ktor.routing.route
@@ -36,8 +35,8 @@ object Server {
             }
 
             install(StatusPages) {
-                exception<FailedAuthenticationException> {
-                    call.respond(HttpStatusCode.Unauthorized, "Invalid username or password")
+                exception<ATCException> {
+                    call.respond(it.status, it.msg)
                 }
             }
 
