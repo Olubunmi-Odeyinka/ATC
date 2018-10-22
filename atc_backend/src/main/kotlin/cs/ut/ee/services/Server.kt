@@ -21,6 +21,7 @@ import io.ktor.routing.route
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.tomcat.Tomcat
+import org.jetbrains.exposed.sql.transactions.transaction
 
 object Server {
     @JvmStatic
@@ -44,7 +45,9 @@ object Server {
                     realm = Configuration.getValue("security:jwt:realm")
                     verifier(JWTConfig.verifier)
                     validate { jwtCredential ->
-                        jwtCredential.payload.getClaim(CLAIM_ID).asInt()?.let { User.findById(it) }
+                        jwtCredential.payload.getClaim(CLAIM_ID).asInt()?.let {
+                            transaction { User.findById(it) }
+                        }
                     }
                 }
             }

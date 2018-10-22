@@ -2,15 +2,21 @@ package cs.ut.ee.services
 
 import cs.ut.ee.services.configuration.Configuration
 import cs.ut.ee.services.configuration.Configuration.CONFIG_PROPERTY
+import cs.ut.ee.services.controllers.GetAllUsers
 import cs.ut.ee.services.controllers.Login
 import cs.ut.ee.services.controllers.NewUser
 import cs.ut.ee.services.database.DbConnection
+import cs.ut.ee.services.entity.User
 import cs.ut.ee.services.entity.Users
 import cs.ut.ee.services.exceptions.FailedAuthenticationException
+import cs.ut.ee.services.security.Admin
 import cs.ut.ee.services.token.CreateToken
 import cs.ut.ee.services.token.LoginToken
+import org.hamcrest.CoreMatchers.isA
+import org.hamcrest.MatcherAssert.assertThat
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -79,5 +85,26 @@ class UserServiceTest {
 
         Configuration.setUp()
         DbConnection.connect()
+    }
+
+    @Test
+    fun getUserTest() {
+        inject()
+
+        transaction {
+            DbConnection.createTable(Users)
+
+            transaction {
+                DbConnection.createTable(Users)
+                val createToken = CreateToken("john", "DoeDoeDoe1", "DoeDoeDoe1")
+                NewUser(createToken).work()
+
+                val usr = User.wrapRow(Users.select { Users.username eq createToken.username!! }.first())
+                usr.role = Admin.role()
+
+                assertThat(GetAllUsers(usr).work(), isA(List::class.java))
+                rollback()
+            }
+        }
     }
 }

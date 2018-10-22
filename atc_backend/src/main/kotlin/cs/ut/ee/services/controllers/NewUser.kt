@@ -1,6 +1,7 @@
 package cs.ut.ee.services.controllers
 
 import cs.ut.ee.services.configuration.Configuration
+import cs.ut.ee.services.controllers.dto.UserDto
 import cs.ut.ee.services.entity.User
 import cs.ut.ee.services.entity.Users
 import cs.ut.ee.services.exceptions.CheckFail
@@ -14,14 +15,14 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.lang.NullPointerException
 
-class NewUser(private val token: CreateToken) : SingleStepOperation<User>() {
+class NewUser(private val token: CreateToken) : SingleStepOperation<UserDto>() {
     private val checks = listOf(
             CapitalizedCheck,
             ContainsNumeric,
             LengthCheck,
             UniqueUsername)
 
-    override fun work(): User {
+    override fun work(): UserDto {
         log.debug("Request to create new principal => $token")
         if (token.password == null || token.confirmPassword == null) {
             throw PasswordsDoNotMatch()
@@ -49,7 +50,12 @@ class NewUser(private val token: CreateToken) : SingleStepOperation<User>() {
                 it[role] = Configuration.getValue("security:defaults:role")
             } get Users.id
 
-            User.findById(id!!) ?: throw NullPointerException()
+            val user: User = User.findById(id!!) ?: throw NullPointerException()
+            UserDto(
+                    id = user.id.value,
+                    username = user.username,
+                    password = user.password,
+                    role = user.role ?: "")
         }
     }
 

@@ -12,10 +12,11 @@ object Users: IntIdTable() {
     val role = varchar("role", 50).nullable()
 }
 
+
 class User(id: EntityID<Int>) : IntEntity(id), Principal {
-    val username by Users.username
-    val password by Users.password
-    val role by Users.role
+    var username by Users.username
+    var password by Users.password
+    var role by Users.role
 
     companion object : IntEntityClass<User>(Users)
 }
