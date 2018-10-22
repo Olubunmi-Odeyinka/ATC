@@ -44,7 +44,7 @@ class NewUser(private val token: CreateToken) : SingleStepOperation<User>() {
             require(token.username != null)
 
             val id = Users.insert {
-                it[username] = token.username!!
+                it[username] = token.username
                 it[password] = token.password
                 it[role] = Configuration.getValue("security:defaults:role")
             } get Users.id
