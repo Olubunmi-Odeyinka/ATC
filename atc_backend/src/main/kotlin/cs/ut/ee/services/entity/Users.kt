@@ -1,5 +1,6 @@
 package cs.ut.ee.services.entity
 
+import io.ktor.auth.Principal
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
@@ -11,7 +12,7 @@ object Users: IntIdTable() {
     val role = varchar("role", 50).nullable()
 }
 
-class User(id: EntityID<Int>) : IntEntity(id) {
+class User(id: EntityID<Int>) : IntEntity(id), Principal {
     val username by Users.username
     val password by Users.password
     val role by Users.role
