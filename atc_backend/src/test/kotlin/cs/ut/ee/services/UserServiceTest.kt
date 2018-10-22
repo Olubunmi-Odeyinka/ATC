@@ -5,6 +5,8 @@ import cs.ut.ee.services.configuration.Configuration.CONFIG_PROPERTY
 import cs.ut.ee.services.controllers.GetAllUsers
 import cs.ut.ee.services.controllers.Login
 import cs.ut.ee.services.controllers.NewUser
+import cs.ut.ee.services.controllers.UpdateRole
+import cs.ut.ee.services.controllers.dto.UserDto
 import cs.ut.ee.services.database.DbConnection
 import cs.ut.ee.services.entity.User
 import cs.ut.ee.services.entity.Users
@@ -93,18 +95,35 @@ class UserServiceTest {
 
         transaction {
             DbConnection.createTable(Users)
+            val usr = createAdminUser()
 
-            transaction {
-                DbConnection.createTable(Users)
-                val createToken = CreateToken("john", "DoeDoeDoe1", "DoeDoeDoe1")
-                NewUser(createToken).work()
-
-                val usr = User.wrapRow(Users.select { Users.username eq createToken.username!! }.first())
-                usr.role = Admin.role()
-
-                assertThat(GetAllUsers(usr).work(), isA(List::class.java))
-                rollback()
-            }
+            assertThat(GetAllUsers(usr).work(), isA(List::class.java))
+            rollback()
         }
+    }
+
+    @Test
+    fun updateRoleTest() {
+        inject()
+
+        transaction {
+            DbConnection.createTable(Users)
+
+            val createAdminUser = createAdminUser()
+            val userDto = UserDto(role = "changed")
+            val result = UpdateRole(createAdminUser.id.value, userDto, createAdminUser).work()
+
+            assertEquals(result.role, userDto.role)
+            rollback()
+        }
+    }
+
+    private fun createAdminUser(): User {
+        val createToken = CreateToken("john", "DoeDoeDoe1", "DoeDoeDoe1")
+        NewUser(createToken).work()
+
+        val usr = User.wrapRow(Users.select { Users.username eq createToken.username!! }.first())
+        usr.role = Admin.role()
+        return usr
     }
 }
