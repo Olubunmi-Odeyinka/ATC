@@ -15,7 +15,6 @@ Copy and paste for the lazy:
 git clone git@github.com:Olubunmi-Odeyinka/ATC.git
 cd atc_backend
 mvn package
-java -jar target/atc-backend-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 ### Running
