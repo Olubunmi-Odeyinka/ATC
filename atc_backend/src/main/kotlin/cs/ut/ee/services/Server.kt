@@ -5,9 +5,14 @@ import com.fasterxml.jackson.datatype.joda.JodaModule
 import cs.ut.ee.services.configuration.Configuration
 import cs.ut.ee.services.database.DbConnection
 import cs.ut.ee.services.endpoints.userService
+import cs.ut.ee.services.entity.User
 import cs.ut.ee.services.exceptions.ATCException
+import cs.ut.ee.services.security.jwt.JWTConfig
+import cs.ut.ee.services.security.jwt.JWTConfig.CLAIM_ID
 import io.ktor.application.call
 import io.ktor.application.install
+import io.ktor.auth.Authentication
+import io.ktor.auth.jwt.jwt
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.StatusPages
 import io.ktor.jackson.jackson
@@ -16,6 +21,7 @@ import io.ktor.routing.route
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.tomcat.Tomcat
+import org.jetbrains.exposed.sql.transactions.transaction
 
 object Server {
     @JvmStatic
@@ -31,6 +37,18 @@ object Server {
                     enable(SerializationFeature.INDENT_OUTPUT)
                     disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                     registerModule(JodaModule())
+                }
+            }
+
+            install(Authentication) {
+                jwt("jwt") {
+                    realm = Configuration.getValue("security:jwt:realm")
+                    verifier(JWTConfig.verifier)
+                    validate { jwtCredential ->
+                        jwtCredential.payload.getClaim(CLAIM_ID).asInt()?.let {
+                            transaction { User.findById(it) }
+                        }
+                    }
                 }
             }
 

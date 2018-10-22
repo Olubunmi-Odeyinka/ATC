@@ -13,3 +13,8 @@ security:
     length: 8
   defaults:
     role: inactive
+  jwt:
+    secret: zAP5MBA4B4Ijz0MZaS48
+    issuer: ATC
+    validity: 36000000
+    realm: atc-realm
