@@ -57,7 +57,9 @@ Consumes:
 ```
 
 Produces:
+
 403, Unauthorized
+
 200, OK
 
 JWT token e.g. `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBdXRoZW50aWNhdGlvbiIsImlzcyI6IkFUQyIsImlkIjozMCwiZXhwIjoxNTQwMjY3NTM1fQ.U4jO7f7_KPjqK2uja7M68BXlBdvHsTTKk1UbHZQvBr0`
@@ -77,7 +79,9 @@ Consumes:
 
 
 Produces:
+
 409, Conflict if data is conflicting
+
 201, Created: A user is created: 
 ```
 {
@@ -107,7 +111,9 @@ Consumes:
 ```
 
 Produces:
+
 409, Conflict - no id provided
+
 200, OK - user was updated:
 ```
 {
@@ -126,6 +132,7 @@ _____
 Consumes: -
 
 Produces:
+
 200, OK 
 ```
 [
