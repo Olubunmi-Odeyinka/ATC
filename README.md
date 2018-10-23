@@ -15,7 +15,6 @@ Copy and paste for the lazy:
 git clone git@github.com:Olubunmi-Odeyinka/ATC.git
 cd atc_backend
 mvn package
-java -jar target/atc-backend-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 ### Running
@@ -35,3 +34,115 @@ database:
   
 ```
 1. Run the application with ```java -jar -Datc.env=path/to/config -Dlog4j.configurationFile=env/log4j2.yaml target/atc-backend-1.0-SNAPSHOT-jar-with-dependencies.jar```
+
+### API documentitation
+
+API is available with the path `host:port/api/`.
+
+#### Unauthenticated routes
+
+____
+
+**POST** `/users/login/`
+
+Consumes:
+```
+{
+  "id": 0, /* Optional */
+  "username": "username",
+  "password": "password",
+  "role": "optional" /* Optional */
+}
+
+```
+
+Produces:
+
+403, Unauthorized
+
+200, OK
+
+JWT token e.g. `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBdXRoZW50aWNhdGlvbiIsImlzcyI6IkFUQyIsImlkIjozMCwiZXhwIjoxNTQwMjY3NTM1fQ.U4jO7f7_KPjqK2uja7M68BXlBdvHsTTKk1UbHZQvBr0`
+
+___
+
+**POST** `/users/`
+
+Consumes:
+```
+{
+  "username": "",
+  "password": "",
+  "confirmPassword": ""
+}
+```
+
+
+Produces:
+
+409, Conflict if data is conflicting
+
+201, Created: A user is created: 
+```
+{
+  "id": 0,
+  "username": "",
+  "password": "******",
+  "role": ""
+}
+```
+
+____
+
+### Authorized routes
+
+____
+
+**PATCH** `/users/{id}`
+
+Consumes:
+```
+{
+  "id": 0,
+  "username": "",
+  "password": "******",
+  "role": ""
+}
+```
+
+Produces:
+
+409, Conflict - no id provided
+
+200, OK - user was updated:
+```
+{
+  "id": 0,
+  "username": "",
+  "password": "******",
+  "role": ""
+}
+```
+
+_____
+
+
+**GET** `/users`
+
+Consumes: -
+
+Produces:
+
+200, OK 
+```
+[
+  {
+    "id": 0,
+    "username": "",
+    "password": "******",
+    "role": ""
+  }
+]
+```
+
+____
