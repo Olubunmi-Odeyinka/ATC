@@ -38,6 +38,11 @@
             <id>kotlinx-io-repository</id>
             <url>https://dl.bintray.com/kotlin/kotlinx/</url>
         </repository>
+        <repository>
+            <name>Kotlin EAP</name>
+            <id>kotlin-eap</id>
+            <url>https://dl.bintray.com/kotlin/kotlin-eap/</url>
+        </repository>
     </repositories>
 
     <dependencies>
