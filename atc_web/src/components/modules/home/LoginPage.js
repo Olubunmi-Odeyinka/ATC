@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {Field ,Form} from 'formik';
 import {withFormik} from 'formik';
 import Yup from 'yup';
 import {bindActionCreators} from 'redux';
@@ -15,7 +16,7 @@ export class LoginPage extends React.Component {
 
     state = {
         formRootObjectName: 'login',
-        formHeader: "Login User",
+
         themeClasses: ' bg-white',
         showSavingButton: true,
         savingString:['Logging In', 'Login', 'btn-success'],
@@ -85,6 +86,43 @@ export class LoginPage extends React.Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-6 offset-md-3">
+                            <div className="card m-4">
+                                <div>
+                                    <h3 className="d-inline float-left">Login User</h3>
+                                </div>
+                                <div className="card-body">
+                                    <Form>
+                                      <div className='form-group'>
+                                         <label for='username' htmlFor='username'>UserName</label>
+                                            <Field
+                                                id='username'
+                                                name='username'
+                                                className='form-control'
+                                                type='text'
+                                                placeholder='type user name here'
+                                                />
+                                        </div>
+                                        <div className='form-group'>
+                                        <label for='password' htmlFor='password'>Password</label>
+                                            <Field
+                                                id='password'
+                                                name='password'
+                                                className='form-control'
+                                                type='password'
+                                                placeholder='type user name here'
+                                                />
+                                        </div>
+
+                                        <input
+                                            type="submit"
+                                            // disabled={this.props.isSubmitting}
+                                            // value={this.props.isSubmitting ? this.props.formState.savingString[0] + '...' : this.props.formState.savingString[1]}
+                                            className={"d-print-none btn btn-block offset-2 col-8 " +  "btn-info"}//this.props.formState.savingString[2] ||
+                                            onClick={this.props.onSave}/>
+                                    </Form>
+                                </div>
+                                <div className="card-footer bg-dark"></div>
+                            </div>
                             {/* <GeneralForm
                                 formState={{...this.state}}
                                 //lookUps={{'DepartmentID':this.props.departments, 'NeedClass': this.props.needclasses}}
@@ -94,6 +132,7 @@ export class LoginPage extends React.Component {
                                 //thisRef={this}
                                 {...props}
                             /> */}
+                            
                         </div>
                     </div>
                 </div>

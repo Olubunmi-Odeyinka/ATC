@@ -12,11 +12,7 @@ export class Header extends React.Component {
     menuObject = {
         '/': 'nav-item',
         '/books': 'nav-item',
-        '/next': 'nav-item',
-        '/accessments': 'nav-item',
-        '/precontracts': 'nav-item',
-        '/postcontracts': 'nav-item',
-        '/vendors': 'nav-item',
+        '/users': 'nav-item',
         '/contracts': 'nav-item'
     };
 
@@ -94,39 +90,12 @@ export class Header extends React.Component {
                         {homeNav}
                         {!_.isEmpty(this.props.userInfo)?
                           (<Aux>
-                            {this.checkAccess('ASSESSMENT')?
-                            <li className={this.menuObject['/assessments']}>
-                                <NavLink className="nav-link" activeClassName='active' to="/assessments">Needs Assessment</NavLink>
-                            </li>: null}
-                            {this.checkAccess('PRE-CONTRACT')?
-                            <li className={this.menuObject['/precontracts']}>
-                                <NavLink className="nav-link" activeClassName='active' to="/precontracts">Pre Contracts</NavLink>
-                            </li>: null}
-                            {this.checkAccess('AWARD-CONTRACT')?
-                            <li className={this.menuObject['/contracts']}>
-                                <NavLink className="nav-link" to="/contracts">Awarded Contracts</NavLink>
-                            </li>: null}
-                            {this.checkAccess('POST-CONTRACT')?
-                            <li className={this.menuObject['/postcontracts']}>
-                                <NavLink className="nav-link" to="/postcontracts">Post Contracts</NavLink>
-                            </li>: null}
-                            {this.checkAccess('VENDORS')?
+                          
+                            {this.checkAccess('Users')?
                             <li className={this.menuObject['/vendors']}>
-                                <NavLink className="nav-link" to="/vendors">Vendors</NavLink>
+                                <NavLink className="nav-link" to="/users">Users</NavLink>
                             </li>: null}
-                            {this.checkAccess('ADMINISTRATION')?
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Administration</a>
-                                <div className="dropdown-menu">
-                                    <NavLink className="dropdown-item" to="/users">Manage User</NavLink>
-                                    <NavLink className="dropdown-item" to="/roles">Manage Roles</NavLink>
-                                    <NavLink className="dropdown-item" to="/systemcodes">System Codes</NavLink>
-                                </div>
-                            </li>: null}
-                            {/*{this.checkAccess('REPORTS')?*/}
-                            {/*<li className={this.menuObject['/report']}>*/}
-                                {/*<NavLink className="nav-link" to="/filemovements1">Reports</NavLink>*/}
-                            {/*</li>: null}*/}
+                           
                           </Aux>) : null}
                     </ul>
 
