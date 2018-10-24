@@ -87,7 +87,7 @@ export class LoginPage extends React.Component {
                     <div className="row">
                         <div className="col-md-6 offset-md-3">
                             <div className="card m-4">
-                                <div>
+                                <div className="card-header">
                                     <h3 className="d-inline float-left">Login User</h3>
                                 </div>
                                 <div className="card-body">
