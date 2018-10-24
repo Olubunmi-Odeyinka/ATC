@@ -6,6 +6,8 @@ import auth from './authReducer'
 import error from './errorReducer';
 import {authReducer, dashBoardReducer} from './home/homeReducer';
 import loadingReducer from "./loadingReducer";
+import user from './user/userReducer';
+import users from './user/usersReducer';
 
 
 
@@ -16,6 +18,8 @@ const rootReducer = combineReducers({
   ajaxCallsInProgress,
   routing: routerReducer,
   error,
+  user,
+  users,
     loading: loadingReducer
 });
 
