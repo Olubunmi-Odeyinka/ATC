@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Dialogue from "../../common/page/dialogue/dialogue";
 //Todo: we need to redirect to /login if not authenticated
 //Todo: create all required components etc to archive the above
 // import { connect } from 'react-redux';
@@ -21,12 +20,12 @@ export default class HomePage extends React.Component{
             <div className="container">
                 <div className="row">
                     <div className="col-6">
-                        <img src={require("../../../styles/NIMASA.jpg")} className="rounded float-left mx-3" height="150"  alt="NIMASA" />
+                        {/* <img src={require("../../../image/here)} className="rounded float-left mx-3" height="150"  alt="Image" /> */}
                     </div>
                     <div className="col-6">
-                        <h3>Procurement Tracker</h3>
-                        <h5>Copyright &copy; Klartek-Samuelson Consortium</h5>
-                        <p className="lead">Track Procurements and Related Files.</p>
+                        <h3>ATC</h3>
+                        <h5>Copyright &copy; Software Quality Limited</h5>
+                        <p className="lead">Track Flight and Airport Operation.</p>
                     </div>
                 </div>
             </div>

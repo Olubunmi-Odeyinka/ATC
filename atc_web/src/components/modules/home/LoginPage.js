@@ -5,12 +5,7 @@ import {withFormik} from 'formik';
 import Yup from 'yup';
 import {bindActionCreators} from 'redux';
 import * as loginAction from '../../../actions/homeActions';
-import * as lookUpsAction from '../../../actions/lookupsActions';
-import GeneralForm from '../../common/form/FormBase';
 import * as operation from '../../../config/constants/operationTypes';
-import {systemCodesFormattedForDropdown} from '../../common/utilities/selectors';
-import {getFieldNameAndIndexFromName} from '../../../config/utilities/fieldName';
-import Aux from '../../common/page/HOC/Group'
 //import {genresFormattedForDropdown} from '../../common/utilities/selectors';
 import toastr from 'toastr';
 import _ from 'underscore';
@@ -27,13 +22,13 @@ export class LoginPage extends React.Component {
         formState: {}
     };
 
-    headerGenerator = (headerString) => {
-        return (
-            <div className='py-2'>
-                <h4>{headerString}</h4>
-                <hr/>
-            </div>);
-    }
+    // headerGenerator = (headerString) => {
+    //     return (
+    //         <div className='py-2'>
+    //             <h4>{headerString}</h4>
+    //             <hr/>
+    //         </div>);
+    // }
 
     cardDisplayConfig ={
         hideBackToList: true,
@@ -90,7 +85,7 @@ export class LoginPage extends React.Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-6 offset-md-3">
-                            <GeneralForm
+                            {/* <GeneralForm
                                 formState={{...this.state}}
                                 //lookUps={{'DepartmentID':this.props.departments, 'NeedClass': this.props.needclasses}}
                                 fields={this.fieldsDefinition}
@@ -98,7 +93,7 @@ export class LoginPage extends React.Component {
                                 cardDisplayConfig={{...this.cardDisplayConfig}}
                                 //thisRef={this}
                                 {...props}
-                            />
+                            /> */}
                         </div>
                     </div>
                 </div>

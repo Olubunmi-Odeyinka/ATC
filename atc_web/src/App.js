@@ -1,26 +1,38 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+
+import { render } from 'react-dom';
+import { AppContainer } from 'react-hot-loader';
+import configureStore, { history } from './config/configureStore';
+import {beginAjaxCall, ajaxCallError} from './actions/ajaxStatusActions';
+import Root from './components/Root';
+
+import 'jquery';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap-grid.css';
+import 'bootstrap/dist/css/bootstrap-reboot.css';
+import 'font-awesome/css/font-awesome.min.css';
+
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+//import 'bootstrap/dist/css/bootstrap-theme.css';
+import 'toastr/build/toastr.css';
+//  import jwt from 'jsonwebtoken';
+import {setAuthorizationToken} from "./config/axios";
+import {JWT_LOCAL_KEY, SALT_KEY} from "./config/constants/utils";
+import {loginSuccess} from "./actions/homeActions";
+
+
+
 import './App.css';
+const store = configureStore();
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+        <AppContainer>
+          <Root store={store} history={history} />
+        </AppContainer>
     );
   }
 }
