@@ -5,10 +5,13 @@ ATC(i.e. Aircraft Traffic Coordination system for Tallinn Airport) a Lab 1 in su
 
 ### Installation:
 
-1. Make sure you have [Maven](https://maven.apache.org/) installed.
-1. Clone the repository.
-1. Move into the backend folder.
-1. Build using `mvn package`.
+1. Install [JDK](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html). 
+1. Install [Maven](https://maven.apache.org/). Follow the installation guide provided by the website.
+1. Install [Postgres](https://www.postgresql.org/).
+1. Create a database in Postgres (for example `atc`, since this one is provided by example config)
+1. Clone the repository via git: `git clone git@github.com:Olubunmi-Odeyinka/ATC.git`.
+1. Move into the backend folder: `cd atc_backend`.
+1. Build using the project using `mvn package`.
 
 Copy and paste for the lazy:
 ```
@@ -23,14 +26,25 @@ mvn package
 1. Create a configuration file with the following structure:
 ```
 server:
-  port: 8080 # port to run server on
+  port: 8080 # port to run the server on
 
 database:
-  user: postgres # user to access db as
-  password: postgres # password of the user to access db as
+  user: postgres # db user
+  password: postgres # db password
 
-  source: jdbc:postgresql://localhost:5432/atc # location of the db
-  driver: org.postgresql.Driver # driver to use when connecting to the db
+  source: jdbc:postgresql://localhost:5432/atc # location of the database and database name 
+  driver: org.postgresql.Driver # driver to use when connecting to cb
+
+security:
+  password:
+    length: 8 # minimal length of allowed password
+  defaults:
+    role: inactive # default role for newly created user
+  jwt:
+    secret: zAP5MBA4B4Ijz0MZaS48 # user to use for JWT
+    issuer: ATC # JWT token issuer
+    validity: 36000000 # How long is the token valid
+    realm: atc-realm # Issuer realm
   
 ```
 1. Run the application with ```java -jar -Datc.env=path/to/config -Dlog4j.configurationFile=env/log4j2.yaml target/atc-backend-1.0-SNAPSHOT-jar-with-dependencies.jar```
