@@ -40,6 +40,14 @@ class NewUser(private val token: CreateToken) : SingleStepOperation<UserDto>() {
             if (!v) throw CheckFail(k.error())
         }
 
+        log.debug("Password checks passed,  checking username")
+        if (token.username == null) {
+            throw CheckFail("username cannot be empty")
+        }
+        if (!UniqueUsername.pass(token.username)) {
+            throw CheckFail(UniqueUsername.error())
+        }
+
         log.debug("Checks passed, creating user => $token")
         return transaction {
             require(token.username != null)

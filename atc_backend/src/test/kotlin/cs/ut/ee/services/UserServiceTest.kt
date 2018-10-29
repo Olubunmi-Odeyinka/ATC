@@ -10,6 +10,7 @@ import cs.ut.ee.services.controllers.dto.UserDto
 import cs.ut.ee.services.database.DbConnection
 import cs.ut.ee.services.entity.User
 import cs.ut.ee.services.entity.Users
+import cs.ut.ee.services.exceptions.CheckFail
 import cs.ut.ee.services.exceptions.FailedAuthenticationException
 import cs.ut.ee.services.security.Admin
 import cs.ut.ee.services.token.CreateToken
@@ -81,7 +82,7 @@ class UserServiceTest {
         }
     }
 
-    @Test
+    @Test(expected = CheckFail::class)
     fun createUserFailTest() {
         inject()
 
