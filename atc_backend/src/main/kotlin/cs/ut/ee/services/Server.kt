@@ -6,6 +6,7 @@ import cs.ut.ee.services.configuration.Configuration
 import cs.ut.ee.services.database.DbConnection
 import cs.ut.ee.services.endpoints.userService
 import cs.ut.ee.services.entity.User
+import cs.ut.ee.services.entity.Users
 import cs.ut.ee.services.exceptions.ATCException
 import cs.ut.ee.services.security.jwt.JWTConfig
 import cs.ut.ee.services.security.jwt.JWTConfig.CLAIM_ID
@@ -28,6 +29,7 @@ object Server {
     fun main(args: Array<String>) {
         Configuration.setUp()
         DbConnection.connect()
+        DbConnection.createTable(Users)
 
         val port = Configuration.getValue<Int>("server:port")
 

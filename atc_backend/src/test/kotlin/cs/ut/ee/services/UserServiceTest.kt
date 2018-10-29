@@ -81,6 +81,25 @@ class UserServiceTest {
         }
     }
 
+    @Test
+    fun createUserFailTest() {
+        inject()
+
+        transaction {
+            DbConnection.createTable(Users)
+            val createToken = CreateToken("john", "DoeDoeDoe1", "DoeDoeDoe1")
+            val user = NewUser(createToken).work()
+            val user2 = NewUser(createToken).work()
+
+            assertEquals(createToken.username, user.username)
+            assertEquals(createToken.password, user.password)
+            assertEquals(createToken.username, user2.username)
+            assertEquals(createToken.password, user2.password)
+
+            rollback()
+        }
+    }
+
     private fun inject() {
         System.setProperty(CONFIG_PROPERTY, "env/dev.yaml")
         System.setProperty("log4j.configurationFile", "env/log4j2.yaml")
