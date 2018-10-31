@@ -1,0 +1,178 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: JWTConfig</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">cs.ut.ee.services.security.jwt</a> ]
+</div>
+
+<h1>Coverage Summary for Class: JWTConfig (cs.ut.ee.services.security.jwt)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">JWTConfig</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 16)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">JWTConfig$issuer$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">JWTConfig$secret$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">JWTConfig$validity$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 19)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package cs.ut.ee.services.security.jwt
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.auth0.jwt.JWT
+<i>4</i>&nbsp;import com.auth0.jwt.JWTVerifier
+<i>5</i>&nbsp;import com.auth0.jwt.algorithms.Algorithm
+<i>6</i>&nbsp;import cs.ut.ee.services.configuration.Configuration
+<i>7</i>&nbsp;import cs.ut.ee.services.entity.User
+<i>8</i>&nbsp;import java.util.Date
+<i>9</i>&nbsp;
+<b class="nc"><i>10</i>&nbsp;object JWTConfig {</b>
+<b class="nc"><i>11</i>&nbsp;    private val secret by lazy { Configuration.getValue&lt;String&gt;(&quot;security:jwt:secret&quot;) }</b>
+<b class="nc"><i>12</i>&nbsp;    private val issuer by lazy { Configuration.getValue&lt;String&gt;(&quot;security:jwt:issuer&quot;) }</b>
+<b class="nc"><i>13</i>&nbsp;    private val validity by lazy { Configuration.getValue&lt;Int&gt;(&quot;security:jwt:validity&quot;) }</b>
+<b class="nc"><i>14</i>&nbsp;    private val algorithm = Algorithm.HMAC256(secret)</b>
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    const val CLAIM_ID = &quot;id&quot;
+<i>17</i>&nbsp;
+<b class="nc"><i>18</i>&nbsp;    val verifier: JWTVerifier = JWT</b>
+<b class="nc"><i>19</i>&nbsp;            .require(algorithm)</b>
+<b class="nc"><i>20</i>&nbsp;            .withIssuer(issuer)</b>
+<b class="nc"><i>21</i>&nbsp;            .build()</b>
+<i>22</i>&nbsp;
+<b class="nc"><i>23</i>&nbsp;    fun makeToken(user: User): String = JWT.create()</b>
+<b class="nc"><i>24</i>&nbsp;            .withSubject(&quot;Authentication&quot;)</b>
+<b class="nc"><i>25</i>&nbsp;            .withClaim(CLAIM_ID, user.id.value)</b>
+<b class="nc"><i>26</i>&nbsp;            .withIssuer(issuer)</b>
+<b class="nc"><i>27</i>&nbsp;            .withExpiresAt(getExpiration())</b>
+<b class="nc"><i>28</i>&nbsp;            .sign(algorithm)</b>
+<i>29</i>&nbsp;
+<b class="nc"><i>30</i>&nbsp;    private fun getExpiration() = Date(System.currentTimeMillis() + validity)</b>
+<i>31</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-10-31 13:40</div>
+</div>
+</body>
+</html>

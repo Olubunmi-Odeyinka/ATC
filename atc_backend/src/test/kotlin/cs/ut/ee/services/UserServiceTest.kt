@@ -10,9 +10,9 @@ import cs.ut.ee.services.controllers.dto.UserDto
 import cs.ut.ee.services.database.DbConnection
 import cs.ut.ee.services.entity.User
 import cs.ut.ee.services.entity.Users
-import cs.ut.ee.services.exceptions.CheckFail
-import cs.ut.ee.services.exceptions.FailedAuthenticationException
+import cs.ut.ee.services.exceptions.*
 import cs.ut.ee.services.security.Admin
+import cs.ut.ee.services.security.Operator
 import cs.ut.ee.services.token.CreateToken
 import cs.ut.ee.services.token.LoginToken
 import org.hamcrest.CoreMatchers.isA
@@ -100,6 +100,39 @@ class UserServiceTest {
             rollback()
         }
     }
+    @Test(expected = PasswordsDoNotMatch::class)
+    fun createUserFailPasswordTest() {
+        inject()
+        // test with passwords different.
+        transaction {
+            DbConnection.createTable(Users)
+            // password differ - first one ends with lowercase 1(one), second - with L
+            val createToken = CreateToken("john", "DoeDoeDoe1", "DoeDoeDoel")
+            val user = NewUser(createToken).work()
+
+            assertEquals(createToken.username, user.username)
+            assertEquals(createToken.password, user.password)
+
+            rollback()
+        }
+    }
+
+    @Test(expected = CheckFail::class)
+    fun createUserFailPasswordCapitalizedTest() {
+        inject()
+        // test with passwords different.
+        transaction {
+            DbConnection.createTable(Users)
+            // passwords match, but lack capitalization
+            val createToken = CreateToken("john", "doedoedoe1", "doedoedoe1")
+            val user = NewUser(createToken).work()
+
+            assertEquals(createToken.username, user.username)
+            assertEquals(createToken.password, user.password)
+
+            rollback()
+        }
+    }
 
     private fun inject() {
         System.setProperty(CONFIG_PROPERTY, "env/dev.yaml")
@@ -122,6 +155,7 @@ class UserServiceTest {
         }
     }
 
+
     @Test
     fun updateRoleTest() {
         inject()
@@ -138,12 +172,55 @@ class UserServiceTest {
         }
     }
 
+    @Test (expected = InvalidId::class)
+    fun updateRoleIdFailTest() {
+        inject()
+
+        transaction {
+            DbConnection.createTable(Users)
+
+            val createAdminUser = createAdminUser()
+            val userDto = UserDto(role = "changed")
+            val result = UpdateRole(-1, userDto, createAdminUser).work()
+
+            assertEquals(result.role, userDto.role)
+            rollback()
+        }
+    }
+
+    @Test (expected = NotPermitted::class)
+    fun updateRolePermissionFailTest() {
+        inject()
+
+        transaction {
+            DbConnection.createTable(Users)
+
+            val user = createNormalUser()
+
+            val createAdminUser = createAdminUser()
+            val userDto = UserDto(role = "changed")
+            //val result0 = UpdateRole(createAdminUser.id.value, userDto, createAdminUser).work()
+            val result = UpdateRole(createAdminUser.id.value, userDto, user).work()
+
+            assertEquals(result.role, userDto.role)
+            rollback()
+        }
+    }
+
     private fun createAdminUser(): User {
         val createToken = CreateToken("john", "DoeDoeDoe1", "DoeDoeDoe1")
         NewUser(createToken).work()
 
         val usr = User.wrapRow(Users.select { Users.username eq createToken.username!! }.first())
         usr.role = Admin.role()
+        return usr
+    }
+    private fun createNormalUser(): User {
+        val createToken = CreateToken("johnny", "DoeDoeDoe1", "DoeDoeDoe1")
+        NewUser(createToken).work()
+
+        val usr = User.wrapRow(Users.select { Users.username eq createToken.username!! }.first())
+        usr.role = Operator.role()
         return usr
     }
 }
