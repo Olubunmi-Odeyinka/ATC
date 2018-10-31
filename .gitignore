@@ -50,6 +50,5 @@ hs_err_pid*
 
 .idea
 /atc_backend/target/
-/atc_backend/code_coverage/
 atc_backend/atc_backend.iml
 /atc_backend/atc-backend.iml
