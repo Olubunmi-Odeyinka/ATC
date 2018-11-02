@@ -11,6 +11,11 @@ import _ from 'underscore';
 
 export class LoginPage extends React.Component {
 
+    redirect =(successMessage) => {
+        toastr.success(successMessage);
+        this.props.history.push('/users');
+    }
+
     user = {username: '', password: ''};
 
     theForm = ({values,errors})=>(  
@@ -69,9 +74,9 @@ export class LoginPage extends React.Component {
             password: Yup.string('Password is a string').required('Password field is required')
         }),
         handleSubmit(values, bag){
-            let successMessage = null;
+
             bag.props.loginAction.login(values)
-            .then(() => bag.props.redirect(successMessage))
+            .then(() => bag.props.redirect('Login Successful'))
                  .catch(error => {
                  bag.setSubmitting(false);
                      toastr.error(error);

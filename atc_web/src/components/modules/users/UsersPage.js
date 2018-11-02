@@ -36,15 +36,15 @@ export class UsersPage extends React.Component {
              </span>)
         },
         {
-            Header: "Email",
-            accessor: "Email"
+            Header: "Identifier",
+            accessor: "id"
         },
         {
             Header: "User Name",
-            accessor: "UserName"
+            accessor: "username"
         },
         {
-            Header: "Full Name",
+            Header: "Password",
             accessor: "FullName"
         },
         {
