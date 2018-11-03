@@ -6,6 +6,8 @@ import cs.ut.ee.services.configuration.Configuration
 import cs.ut.ee.services.database.DbConnection
 import cs.ut.ee.services.endpoints.timetables
 import cs.ut.ee.services.endpoints.userService
+import cs.ut.ee.services.entity.Flights
+import cs.ut.ee.services.entity.TimeTables
 import cs.ut.ee.services.entity.User
 import cs.ut.ee.services.entity.Users
 import cs.ut.ee.services.exceptions.ATCException
@@ -34,7 +36,7 @@ object Server {
     fun main(args: Array<String>) {
         Configuration.setUp()
         DbConnection.connect()
-        DbConnection.createTable(Users)
+        DbConnection.createTable(Users, TimeTables, Flights)
 
         val port = Configuration.getValue<Int>("server:port")
 
