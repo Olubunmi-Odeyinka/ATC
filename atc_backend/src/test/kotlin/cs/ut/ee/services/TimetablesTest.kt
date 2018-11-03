@@ -5,6 +5,7 @@ import cs.ut.ee.services.controllers.NewUser
 import cs.ut.ee.services.database.DbConnection
 import cs.ut.ee.services.entity.Flights
 import cs.ut.ee.services.entity.TimeTables
+import cs.ut.ee.services.entity.Timetable
 import cs.ut.ee.services.entity.User
 import cs.ut.ee.services.entity.Users
 import cs.ut.ee.services.token.Company
@@ -13,11 +14,13 @@ import cs.ut.ee.services.token.CreateToken
 import cs.ut.ee.services.token.FlightName
 import cs.ut.ee.services.token.FlightToken
 import cs.ut.ee.services.token.PlaneModel
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 import org.junit.Test
 import java.util.Base64
 import kotlin.random.Random
+import kotlin.test.assertEquals
 
 class TimetablesTest : AbstractTest() {
 
@@ -37,12 +40,19 @@ class TimetablesTest : AbstractTest() {
             val dto = CreateTimetable(token, u).work()
 
             assert(dto.creator == u!!.username)
+
+            val timeTable = Timetable.findById(dto.id!!)!!
+            val count = Flights.select {
+                Flights.timeTable eq timeTable.id
+            }.count()
+
+            assertEquals(limit, count)
             rollback()
         }
     }
 
     private fun randomFlights(n: Int): CreateTimetableToken {
-        val flights = (0..n).map { it to dateGenerator(it) }.map(::randomFlight)
+        val flights = (0 until n).map { it to dateGenerator(it) }.map(::randomFlight)
         return CreateTimetableToken(flights)
     }
 
