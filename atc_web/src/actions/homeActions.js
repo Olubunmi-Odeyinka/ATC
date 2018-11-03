@@ -32,7 +32,7 @@ export function login(login) {
                 }
             }).catch(error => {
                 dispatch(ajaxCallError(error));
-              throw(error);
+                throw(error);
         });
     }
 }
