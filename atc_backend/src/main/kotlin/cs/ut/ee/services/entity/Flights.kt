@@ -7,9 +7,9 @@ import org.jetbrains.exposed.dao.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption
 
 object Flights : IntIdTable() {
-    val name = varchar("name", 50)
-    val plane = varchar("plane", 50)
-    val company = varchar("company", 50)
+    val name = varchar("name", 2000)
+    val plane = varchar("plane", 2000)
+    val company = varchar("company", 2000)
     val lane = integer("lane")
     val time = datetime("time")
     val timeTable = reference("timetable", TimeTables, onDelete = ReferenceOption.CASCADE)

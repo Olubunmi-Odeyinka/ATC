@@ -1,7 +1,5 @@
 package cs.ut.ee.services
 
-import cs.ut.ee.services.configuration.Configuration
-import cs.ut.ee.services.configuration.Configuration.CONFIG_PROPERTY
 import cs.ut.ee.services.controllers.GetAllUsers
 import cs.ut.ee.services.controllers.Login
 import cs.ut.ee.services.controllers.NewUser
@@ -10,7 +8,11 @@ import cs.ut.ee.services.controllers.dto.UserDto
 import cs.ut.ee.services.database.DbConnection
 import cs.ut.ee.services.entity.User
 import cs.ut.ee.services.entity.Users
-import cs.ut.ee.services.exceptions.*
+import cs.ut.ee.services.exceptions.CheckFail
+import cs.ut.ee.services.exceptions.FailedAuthenticationException
+import cs.ut.ee.services.exceptions.InvalidId
+import cs.ut.ee.services.exceptions.NotPermitted
+import cs.ut.ee.services.exceptions.PasswordsDoNotMatch
 import cs.ut.ee.services.security.Admin
 import cs.ut.ee.services.security.Operator
 import cs.ut.ee.services.token.CreateToken
@@ -24,7 +26,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class UserServiceTest {
+class UserServiceTest : AbstractTest() {
 
     @Test
     fun loginTest() {
@@ -100,6 +102,7 @@ class UserServiceTest {
             rollback()
         }
     }
+
     @Test(expected = PasswordsDoNotMatch::class)
     fun createUserFailPasswordTest() {
         inject()
@@ -134,14 +137,6 @@ class UserServiceTest {
         }
     }
 
-    private fun inject() {
-        System.setProperty(CONFIG_PROPERTY, "env/dev.yaml")
-        System.setProperty("log4j.configurationFile", "env/log4j2.yaml")
-
-        Configuration.setUp()
-        DbConnection.connect()
-    }
-
     @Test
     fun getUserTest() {
         inject()
@@ -172,7 +167,7 @@ class UserServiceTest {
         }
     }
 
-    @Test (expected = InvalidId::class)
+    @Test(expected = InvalidId::class)
     fun updateRoleIdFailTest() {
         inject()
 
@@ -188,7 +183,7 @@ class UserServiceTest {
         }
     }
 
-    @Test (expected = NotPermitted::class)
+    @Test(expected = NotPermitted::class)
     fun updateRolePermissionFailTest() {
         inject()
 
@@ -215,6 +210,7 @@ class UserServiceTest {
         usr.role = Admin.role()
         return usr
     }
+
     private fun createNormalUser(): User {
         val createToken = CreateToken("johnny", "DoeDoeDoe1", "DoeDoeDoe1")
         NewUser(createToken).work()
