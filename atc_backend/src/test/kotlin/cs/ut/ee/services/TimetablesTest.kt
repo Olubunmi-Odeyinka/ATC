@@ -2,7 +2,11 @@ package cs.ut.ee.services
 
 import cs.ut.ee.services.controllers.CreateTimetable
 import cs.ut.ee.services.controllers.NewUser
+import cs.ut.ee.services.database.DbConnection
+import cs.ut.ee.services.entity.Flights
+import cs.ut.ee.services.entity.TimeTables
 import cs.ut.ee.services.entity.User
+import cs.ut.ee.services.entity.Users
 import cs.ut.ee.services.token.Company
 import cs.ut.ee.services.token.CreateTimetableToken
 import cs.ut.ee.services.token.CreateToken
@@ -24,6 +28,8 @@ class TimetablesTest : AbstractTest() {
         val limit = Random.nextInt(1, 10)
         val token = randomFlights(limit)
         transaction {
+            DbConnection.createTable(Users, TimeTables, Flights)
+
             val createToken = CreateToken("john", "DoeDoeDoe1", "DoeDoeDoe1")
             val user = NewUser(createToken).work()
 
