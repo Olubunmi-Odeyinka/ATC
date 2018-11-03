@@ -15,10 +15,6 @@ export function loadUserSuccess(user) {
     return { type: types.LOAD_USER_SUCCESS, user};
 }
 
-// export function loadUserDetailsSuccess(user) {
-//     return { type: types.LOAD_USERDETAILS_SUCCESS, user};
-// }
-
 export function loadUserContractsSuccess(contracts) {
     return { type: types.LOAD_CONTRACTS_LIST_SUCCESSFUL, contracts};
 }
@@ -59,7 +55,7 @@ export function loadUsers(tableInstance) {
     }
     return function(dispatch) {
         dispatch(beginListAjaxCall());
-        return axios.post('/users/list', props).then(users => {
+        return axios.post('/users', props).then(users => {
             dispatch(loadUsersSuccess(users.data.rows));
             dispatch(loadUsersSuccessCount({'Count':users.data.count, 'pageSize': props.pageSize}));
         }).catch(error => {
@@ -74,10 +70,7 @@ export function getUserById(id) {
         dispatch(beginAjaxCall());
         return axios.get('/users/'+ id).then(user => {
             if(user.data){
-                // _.map(user.data.Resources, (val, key) =>{
-                //     user.data.Resources[key].LineNumber = (key+1);
-                //     user.data.Resources[key].ResourseType =  val.Category;
-                // });
+
                 dispatch(loadUserSuccess(user.data));
             }
         }).catch(error => {
@@ -90,11 +83,6 @@ export function getUserById(id) {
 export function saveNewUser(user) {
     return function (dispatch, getState) {
 
-        // _.map(user.Resources, (val, key) =>{
-        //     user.Resources[key].Category =  val.ResourseType;
-        //     user.Resources[key].ResourceSource =  'NAF';
-        //     user.Resources[key].Description = user.NeedTitle
-        // })
         dispatch(beginAjaxCall());
        return axios.post('/users', user)
             .then(result => {
