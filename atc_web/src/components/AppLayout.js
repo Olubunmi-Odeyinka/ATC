@@ -8,6 +8,8 @@ import NotFoundPage from './NotFoundPage';
 import Header from './common/page/header/Header';
 import Footer from './common/page/footer/Footer';
 import dashBoard from './modules/home/DashBoard';
+
+import createUserPage from './modules/home/CreateUserPage';
 import loginPage from './modules/home/LoginPage';
 import PrivateRoute from "./routers/PrivateRoute";
 import PublicRoute from "./routers/PublicRoute";
@@ -52,6 +54,7 @@ class AppLayout extends React.Component {
             <Switch className="d-block">
                 <Route exact={true} path="/" component={homePage} />
                 <PublicRoute path="/login" component={loginPage} />
+                <PublicRoute path="/user/create" component={createUserPage} />
                 <PrivateRoute path="/dashboard" component={dashBoard} />
 
                 <Route component={NotFoundPage} />

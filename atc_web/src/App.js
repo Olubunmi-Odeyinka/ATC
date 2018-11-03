@@ -18,9 +18,6 @@ import 'react-dates/lib/css/_datepicker.css';
 //import 'bootstrap/dist/css/bootstrap-theme.css';
 import 'toastr/build/toastr.css';
 //  import jwt from 'jsonwebtoken';
-import {setAuthorizationToken} from "./config/axios";
-import {JWT_LOCAL_KEY, SALT_KEY} from "./config/constants/utils";
-import {loginSuccess} from "./actions/homeActions";
 
 
 

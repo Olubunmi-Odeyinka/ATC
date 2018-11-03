@@ -15,36 +15,36 @@ export function loadUserSuccess(user) {
     return { type: types.LOAD_USER_SUCCESS, user};
 }
 
-export function loadUserContractsSuccess(contracts) {
-    return { type: types.LOAD_CONTRACTS_LIST_SUCCESSFUL, contracts};
-}
+// export function loadUserContractsSuccess(contracts) {
+//     return { type: types.LOAD_CONTRACTS_LIST_SUCCESSFUL, contracts};
+// }
 
-export function loadUserContractsSuccessCount(page) {
-    return { type: types.LOAD_COUNT, page};
-}
+// export function loadUserContractsSuccessCount(page) {
+//     return { type: types.LOAD_COUNT, page};
+// }
 
-export function loadContractsByUserId(tableInstance, UserID) {
-    let props = {
-        UserID: UserID,
-        page: tableInstance.page,
-        pageSize: tableInstance.pageSize,
-        sorted: tableInstance.sorted,
-        filtered: tableInstance.filtered
-    }
+// export function loadContractsByUserId(tableInstance, UserID) {
+//     let props = {
+//         UserID: UserID,
+//         page: tableInstance.page,
+//         pageSize: tableInstance.pageSize,
+//         sorted: tableInstance.sorted,
+//         filtered: tableInstance.filtered
+//     }
 
-    return function(dispatch) {
-        dispatch(beginAjaxCall());
-        return axios.post('/users/contracts/list', props).then(contracts => {
-            dispatch(loadUserContractsSuccess(contracts.data.rows));
-            dispatch(loadUserContractsSuccessCount({'Count':contracts.data.count, 'pageSize': props.pageSize}));
-            //Todo: loading state
-        }).catch(error => {
-            dispatch(ajaxCallError(error));
-            throw(error);
-        });
-    };
+//     return function(dispatch) {
+//         dispatch(beginAjaxCall());
+//         return axios.post('/users/contracts/list', props).then(contracts => {
+//             dispatch(loadUserContractsSuccess(contracts.data.rows));
+//             dispatch(loadUserContractsSuccessCount({'Count':contracts.data.count, 'pageSize': props.pageSize}));
+//             //Todo: loading state
+//         }).catch(error => {
+//             dispatch(ajaxCallError(error));
+//             throw(error);
+//         });
+//     };
 
-}
+// }
 
 export function loadUsers(tableInstance) {
     let props = {

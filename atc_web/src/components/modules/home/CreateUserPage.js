@@ -2,19 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Field ,Form, withFormik} from 'formik';
-import Yup from 'yup';
 import { NavLink} from 'react-router-dom';
+
+import Yup from 'yup';
 import {bindActionCreators} from 'redux';
-import * as loginAction from '../../../actions/homeActions';
+import * as userAction from '../../../actions/userActions';
 import toastr from 'toastr';
 import _ from 'underscore';
 
 
-export class LoginPage extends React.Component {
+
+export class CreateUserPage extends React.Component {
 
     redirect =(successMessage) => {
         toastr.success(successMessage);
-        this.props.history.push('/users');
+        this.props.history.push('/login');
     }
 
     user = {username: '', password: ''};
@@ -26,7 +28,7 @@ export class LoginPage extends React.Component {
                         <div className="col-md-6 offset-md-3">
                             <div className="card m-4">
                                 <div className="card-header">
-                                    <h3 className="d-inline float-left">Login User</h3>
+                                    <h3 className="d-inline float-left">Create User</h3>
                                 </div>
                                 <div className="card-body">
                                     <Form>
@@ -48,13 +50,22 @@ export class LoginPage extends React.Component {
                                                 type='password'
                                                 placeholder='your password'
                                                 />
-                                        </div>
+                                        
+                                        <label htmlFor='confirmPassword'>Confirm Password</label>
+                                            <Field
+                                                id='confirmPassword'
+                                                name='confirmPassword'
+                                                className='form-control'
+                                                type='password'
+                                                placeholder='confirm password'
+                                                />
+                                      </div>
                                         <input
                                             type="submit"
-                                            className={"d-print-none btn btn-block offset-2 col-8 btn-success"}//this.props.formState.savingString[2] ||
+                                            className={"d-print-none btn btn-block offset-2 col-8 btn-info"}//this.props.formState.savingString[2] ||
                                             onClick={this.props.onSave}/>
                                     </Form>
-                                    <NavLink  to={`users/create`} className="btn btn-outline-secondary offset-2 col-8 mt-3"><span className="fa fa-user-plus px-1 text-info"></span>Create New Account</NavLink>
+                                    <NavLink  to={`users/create`} className="btn btn-outline-secondary offset-2 col-8 mt-3"><span className="fa fa-sign-in px-1 text-danger"></span>Login</NavLink>
                                     {/* <button type="button" className="btn btn-outline-secondary offset-2 col-8 mt-3">Create New Account</button> */}
                                 </div>
                                 <div className="card-footer bg-dark"></div>
@@ -71,12 +82,13 @@ export class LoginPage extends React.Component {
         },
         validationSchema: Yup.object().shape({
             username: Yup.string('User Name is a string').required('User Name field is required'),
-            password: Yup.string('Password is a string').required('Password field is required')
+            password: Yup.string('Password is a string').required('Password field is required'),
+            confirmPassword: Yup.string('Confirm Password is a string').required('Confirm Password  field is required')
         }),
         handleSubmit(values, bag){
 
-            bag.props.loginAction.login({"username": values.username, "password": values.password})
-            .then(() => bag.props.redirect('Login Successful'))
+            bag.props.userAction.saveNewUser({"username": values.username, "password": values.password, "confirmPassword": values.confirmPassword})
+            .then(() => bag.props.redirect('Create User Successful'))
                  .catch(error => {
                  bag.setSubmitting(false);
                  error && error.response && error.response.data && toastr.error(error.response.data);
@@ -87,16 +99,16 @@ export class LoginPage extends React.Component {
     render =()=> {
         return  <this.formikApp
         login={this.props.login}
-        loginAction={this.props.loginAction}
+        userAction={this.props.userAction}
         redirect={this.redirect}
         />
     }
 }
 
-LoginPage.propTypes = {};
+CreateUserPage.propTypes = {};
 
 //Pull in the React Router context so router is available on this.context.router.
-LoginPage.contextTypes = {
+CreateUserPage.contextTypes = {
     router: PropTypes.object
 };
 
@@ -108,8 +120,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        loginAction: bindActionCreators(loginAction, dispatch),
+        userAction: bindActionCreators(userAction, dispatch),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateUserPage);
