@@ -213,6 +213,9 @@
                 </executions>
                 <configuration>
                     <experimentalCoroutines>enable</experimentalCoroutines>
+                    <args>
+                        <arg>-XXLanguage:+InlineClasses</arg>
+                    </args>
                 </configuration>
             </plugin>
             <plugin>

@@ -50,8 +50,6 @@ class NewUser(private val token: CreateToken) : SingleStepOperation<UserDto>() {
 
         log.debug("Checks passed, creating user => $token")
         return transaction {
-            require(token.username != null)
-
             val id = Users.insert {
                 it[username] = token.username
                 it[password] = token.password
