@@ -1,4 +1,4 @@
-package cs.ut.ee.services
+package cs.ut.ee
 
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.joda.JodaModule
@@ -17,6 +17,8 @@ import io.ktor.auth.jwt.jwt
 import io.ktor.features.CORS
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.StatusPages
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
 import io.ktor.jackson.jackson
 import io.ktor.response.respond
 import io.ktor.routing.route
@@ -24,6 +26,7 @@ import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.tomcat.Tomcat
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.time.Duration
 
 object Server {
     @JvmStatic
@@ -44,7 +47,11 @@ object Server {
             }
 
             install(CORS) {
+                method(HttpMethod.Options)
+                header(HttpHeaders.XForwardedProto)
                 anyHost()
+                allowCredentials = true
+                maxAge = Duration.ofDays(1)
             }
 
             install(Authentication) {
