@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.joda.JodaModule
 import cs.ut.ee.services.configuration.Configuration
 import cs.ut.ee.services.database.DbConnection
+import cs.ut.ee.services.endpoints.timetables
 import cs.ut.ee.services.endpoints.userService
 import cs.ut.ee.services.entity.User
 import cs.ut.ee.services.entity.Users
@@ -75,6 +76,7 @@ object Server {
             routing {
                 route("api") {
                     userService()
+                    timetables()
                 }
             }
         }.start(wait = true)
