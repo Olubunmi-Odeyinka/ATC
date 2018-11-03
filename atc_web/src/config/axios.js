@@ -1,7 +1,6 @@
 import axios from 'axios';
 import {BaseUrl} from './constants/urls';
-import {JWT_LOCAL_KEY, SALT_KEY} from "./constants/utils";
-import jwt from 'jsonwebtoken';
+import {JWT_LOCAL_KEY} from "./constants/utils";
 
 const dataApi = axios.create({
     baseURL: BaseUrl
@@ -26,24 +25,21 @@ dataApi.interceptors.response.use(response =>{
     //Todo: Navigate to login
 },error =>{
     console.log(error);
-    if(error.response.status ===401){
-        setAuthorizationToken(undefined)
+    if(error.status === 401){
+        setAuthorizationToken()
     }
     // catch request error like no network here
     return Promise.reject(error); //push error to the calling code
 });
 
-export function setAuthorizationToken(token, returnDecoded) {
+export function setAuthorizationToken(token) {
     if(token){
         dataApi.defaults.headers.common['authorization'] = token;
         localStorage.setItem(JWT_LOCAL_KEY, token);
-        if(returnDecoded) {
-            return jwt.decode(token, SALT_KEY);
-        }
     }else {
         if(localStorage[JWT_LOCAL_KEY]) {
             delete dataApi.defaults.headers.common['authorization'];
-            localStorage.removeItem(JWT_LOCAL_KEY);
+         localStorage.removeItem(JWT_LOCAL_KEY);
         }
     }
 }

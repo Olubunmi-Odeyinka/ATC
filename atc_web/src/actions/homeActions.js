@@ -27,8 +27,8 @@ export function login(login) {
                 //dispatch(loginSuccess(result));
                 const token = result.data;
                 if(token){
-                    let userInfo = setAuthorizationToken(token, true);
-                dispatch(loginSuccess(userInfo));
+                setAuthorizationToken(token);
+                dispatch(loginSuccess(login));
                 }
             }).catch(error => {
                 dispatch(ajaxCallError(error));
