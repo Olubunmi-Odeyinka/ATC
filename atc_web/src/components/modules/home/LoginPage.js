@@ -64,10 +64,7 @@ export class LoginPage extends React.Component {
 
     formikApp = withFormik({
         mapPropsToValues(user){
-            return{
-                usernane:'',
-                password:''
-            }
+           return {...user}
         },
         validationSchema: Yup.object().shape({
             username: Yup.string('User Name is a string').required('User Name field is required'),
@@ -75,11 +72,11 @@ export class LoginPage extends React.Component {
         }),
         handleSubmit(values, bag){
 
-            bag.props.loginAction.login(values)
+            bag.props.loginAction.login({"username": values.username, "password": values.password})
             .then(() => bag.props.redirect('Login Successful'))
                  .catch(error => {
                  bag.setSubmitting(false);
-                     toastr.error(error);
+                 error && error.response && error.response.data && toastr.error(error.response.data);
                  });
         }
     })(this.theForm)
