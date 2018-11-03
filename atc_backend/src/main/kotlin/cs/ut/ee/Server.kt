@@ -11,18 +11,25 @@ import cs.ut.ee.services.entity.TimeTables
 import cs.ut.ee.services.entity.User
 import cs.ut.ee.services.entity.Users
 import cs.ut.ee.services.exceptions.ATCException
+import cs.ut.ee.services.security.jwt.JWTCache
 import cs.ut.ee.services.security.jwt.JWTConfig
 import cs.ut.ee.services.security.jwt.JWTConfig.CLAIM_ID
 import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.auth.Authentication
+import io.ktor.auth.AuthenticationPipeline
+import io.ktor.auth.HttpAuthHeader
+import io.ktor.auth.authentication
 import io.ktor.auth.jwt.jwt
+import io.ktor.auth.parseAuthorizationHeader
 import io.ktor.features.CORS
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.StatusPages
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
 import io.ktor.jackson.jackson
+import io.ktor.pipeline.PipelinePhase
 import io.ktor.response.respond
 import io.ktor.routing.route
 import io.ktor.routing.routing
@@ -61,9 +68,17 @@ object Server {
                 jwt("jwt") {
                     realm = Configuration.getValue("security:jwt:realm")
                     verifier(JWTConfig.verifier)
-                    validate { jwtCredential ->
-                        jwtCredential.payload.getClaim(CLAIM_ID).asInt()?.let {
-                            transaction { User.findById(it) }
+                    validate {
+                        val authHeader = request.parseAuthorizationHeader()
+                        if (authHeader != null
+                                && authHeader.authScheme == "Bearer"
+                                && authHeader is HttpAuthHeader.Single
+                                && !JWTCache.isValid(authHeader.blob)) {
+                            null
+                        } else {
+                            it.payload.getClaim(CLAIM_ID).asInt()?.let { id ->
+                                transaction { User.findById(id) }
+                            }
                         }
                     }
                 }

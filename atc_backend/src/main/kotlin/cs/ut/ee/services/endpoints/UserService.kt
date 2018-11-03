@@ -7,12 +7,14 @@ import cs.ut.ee.services.controllers.UpdateRole
 import cs.ut.ee.services.controllers.dto.UserDto
 import cs.ut.ee.services.entity.User
 import cs.ut.ee.services.exceptions.ATCException
+import cs.ut.ee.services.security.jwt.JWTCache
 import cs.ut.ee.services.security.jwt.JWTConfig
 import cs.ut.ee.services.token.CreateToken
 import cs.ut.ee.services.token.LoginToken
 import io.ktor.application.call
 import io.ktor.auth.authenticate
 import io.ktor.auth.authentication
+import io.ktor.auth.digestAuthenticationCredentials
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
@@ -29,10 +31,22 @@ fun Route.userService() {
         post("/login") {
             val ctx = call.receive<LoginToken>()
             val principal = Login(ctx).work()
-            call.respondText { JWTConfig.makeToken(principal) }
+            val token = JWTConfig.makeToken(principal)
+            JWTCache.add(principal, token)
+            call.respondText(token)
         }
 
         authenticate("jwt") {
+            post("/logout") {
+                val principal = call.authentication.principal
+                if (principal == null) {
+                    call.respond(HttpStatusCode.BadRequest, "No principal")
+                }
+
+                JWTCache.invalidate(principal as User)
+                call.respond(HttpStatusCode.OK)
+            }
+
             patch("/{id}") {
                 val ctx = call.receive<UserDto>()
                 val principal = call.authentication.principal as User?

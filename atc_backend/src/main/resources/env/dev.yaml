@@ -12,7 +12,7 @@ security:
   password:
     length: 8
   defaults:
-    role: inactive
+    role: admin
   jwt:
     secret: zAP5MBA4B4Ijz0MZaS48
     issuer: ATC
