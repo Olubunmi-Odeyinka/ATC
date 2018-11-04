@@ -8,6 +8,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import * as operation from '../../../config/constants/operationTypes';
 import { NavLink} from 'react-router-dom';
+import axios from '../../../config/axios';
 
 export class UsersPage extends React.Component {
 
@@ -68,8 +69,8 @@ export class UsersPage extends React.Component {
     }
 
     render=()=> {
-        const {users} = this.props;
-
+        //const {users} = this.props;
+        console.log(this.props);
         return (
             <div className="m-2 card">
                 <div className="card-header clearfix">
@@ -81,23 +82,44 @@ export class UsersPage extends React.Component {
                 <div className="card-block">
                     <ReactTable
                         manual
-                        data={this.props.users}
+                        data={this.props.users} 
                         style={{'text-align': 'center'}}
                         columns={this.columns}
                         className="-striped -highlight"
                         pages={this.props.pages} // Display the total number of pages
                         loading={this.props.loading} // Display the loading overlay when we need it
                         loadingText={<Spinner/>}
-                        onFetchData={this.props.actions.loadUsers} // Request new data when things change
+                        onFetchData={(state, instance) => {
+                            // show the loading overlay
+                            this.setState({loading: true})
+                            // fetch your data
+                            axios.get('/users', {
+                              page: state.page,
+                              pageSize: state.pageSize,
+                              sorted: state.sorted,
+                              filtered: state.filtered
+                            })
+                              .then((res) => {
+                                // Update react-table
+                                this.setState({
+                                  data: res.data.rows,
+                                  pages: res.data.pages,
+                                  loading: false
+                                })
+                              })
+                          }}
                         filterable
-                        defaultPageSize={10}
+                        defaultPageSize={10} 
                     />
                 </div>
                 <div className="card-footer bg-dark">
                 </div>
             </div>
         );
+
+    
     }
+    
 }
 
 UsersPage.propTypes = {
@@ -118,7 +140,6 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        //lookUpsAction: bindActionCreators(lookUpsAction, dispatch),
         actions: bindActionCreators(userActions, dispatch)
     };
 }

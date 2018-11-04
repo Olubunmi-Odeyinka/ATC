@@ -46,18 +46,13 @@ export function loadUserSuccess(user) {
 
 // }
 
-export function loadUsers(tableInstance) {
-    let props = {
-        page: tableInstance.page,
-        pageSize: tableInstance.pageSize,
-        sorted: tableInstance.sorted,
-        filtered: tableInstance.filtered
-    }
+export function loadUsers() {
+   
     return function(dispatch) {
         dispatch(beginListAjaxCall());
-        return axios.post('/users', props).then(users => {
+        return axios.get('/users').then(users => {
             dispatch(loadUsersSuccess(users.data.rows));
-            dispatch(loadUsersSuccessCount({'Count':users.data.count, 'pageSize': props.pageSize}));
+            //dispatch(loadUsersSuccessCount({'Count':users.data.count, 'pageSize': props.pageSize}));
         }).catch(error => {
             dispatch(ajaxListCallError(error));
             throw(error);

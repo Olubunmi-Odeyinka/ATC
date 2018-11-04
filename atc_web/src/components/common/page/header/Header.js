@@ -25,15 +25,8 @@ export class Header extends React.Component {
         this.props.logout(callback);
     }
 
-    checkAccess = (themodule)=>{
-        if(_.isEmpty(this.props.userInfo.Role)) {
-            return false;
-        }
-        if(this.props.userInfo.Role === 'ADMINISTRATOR'){
-            return true;
-        }
-
-        if((_.where(this.props.userInfo.Modules, {Module : themodule})).length){
+    checkAccess = ()=>{
+        if(!_.isEmpty(this.props.userInfo)) {
             return true;
         }
     }
@@ -41,13 +34,11 @@ export class Header extends React.Component {
 
     render=()=> {
 
-       let homeNav =  _.isEmpty(this.props.userInfo) ?
+       let homeNav =  
             (<li className={this.menuObject['/']}>
                 <NavLink className="nav-link" exact to="/">Home</NavLink>
-            </li>):
-            (<li className={this.menuObject['/dashboard']}>
-                <NavLink className="nav-link" exact to="/dashboard">DashBoard</NavLink>
-            </li>);
+            </li>)
+            
 
        let logInNav =  _.isEmpty(this.props.userInfo) ?
             (<li className="nav-item" >
@@ -61,9 +52,9 @@ export class Header extends React.Component {
                     {/*<a href="profile.html" className="dropdown-item">*/}
                         {/*<i className="fa fa-user-circle"></i> Profile*/}
                     {/*</a>*/}
-                    <NavLink exact to="/changepassword" className="dropdown-item">
+                    {/* <NavLink exact to="/changepassword" className="dropdown-item">
                         <i className="fa fa-user-circle"></i> Change Password
-                    </NavLink>
+                    </NavLink> */}
                     {/*<a href="settings.html" className="dropdown-item">*/}
                         {/*<i className="fa fa-gear"></i> Settings*/}
                     {/*</a>*/}
@@ -91,8 +82,8 @@ export class Header extends React.Component {
                         {!_.isEmpty(this.props.userInfo)?
                           (<Aux>
                           
-                            {this.checkAccess('Users')?
-                            <li className={this.menuObject['/vendors']}>
+                            {this.checkAccess()?
+                            <li className={this.menuObject['/users']}>
                                 <NavLink className="nav-link" to="/users">Users</NavLink>
                             </li>: null}
                            

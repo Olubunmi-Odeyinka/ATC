@@ -18,18 +18,19 @@ import 'react-dates/lib/css/_datepicker.css';
 //import 'bootstrap/dist/css/bootstrap-theme.css';
 import 'toastr/build/toastr.css';
 import {setAuthorizationToken} from "./config/axios";
-import {JWT_LOCAL_KEY, SALT_KEY, USER_INFO} from "./config/constants/utils";
+import {JWT_LOCAL_KEY, USER_INFO} from "./config/constants/utils";
 import {loginSuccess} from "./actions/homeActions";
 
 import './App.css';
-import { userInfo } from 'os';
+//import { userInfo } from 'os';
 const store = configureStore();
 
 if(localStorage[JWT_LOCAL_KEY]) {
-  setAuthorizationToken(localStorage[JWT_LOCAL_KEY]);
-  if(localStorage[userInfo]) {
-    store.dispatch(loginSuccess(localStorage[USER_INFO]));
-  }
+  setAuthorizationToken(localStorage[JWT_LOCAL_KEY], localStorage[USER_INFO], true);
+  store.dispatch(loginSuccess(JSON.parse(localStorage[USER_INFO])));
+  // if(localStorage[userInfo], ) {
+  //   store.dispatch(loginSuccess(localStorage[USER_INFO]));
+  // }
 }
 
 
