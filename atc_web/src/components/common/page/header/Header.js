@@ -56,7 +56,7 @@ export class Header extends React.Component {
                 </NavLink>
             </li>) :
             (<li className="nav-item dropdown mr-3">
-                <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown"><i className="fa fa-user"></i> Welcome {this.props.userInfo.UserName}</a>
+                <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown"><i className="fa fa-user"></i> Welcome {this.props.userInfo.username}</a>
                 <div className="dropdown-menu">
                     {/*<a href="profile.html" className="dropdown-item">*/}
                         {/*<i className="fa fa-user-circle"></i> Profile*/}

@@ -27,7 +27,7 @@ export function login(login) {
                 //dispatch(loginSuccess(result));
                 const token = result.data;
                 if(token){
-                setAuthorizationToken(token);
+                setAuthorizationToken(token, login);
                 dispatch(loginSuccess(login));
                 }
             }).catch(error => {
@@ -53,17 +53,17 @@ export function logout(callBack) {
     }
 }
 
-export function loadDashBoard() {
-    return function (dispatch, getState) {
-        dispatch(beginListAjaxCall());
-        return axios.post('/users/dashboard')
-            .then(result => {
-                dispatch(loadDashBoardSuccess(result.data));
-            }).catch(error => {
-                dispatch(ajaxListCallError(error));
-                throw(error);
-            });
-    }
-}
+// export function loadDashBoard() {
+//     return function (dispatch, getState) {
+//         dispatch(beginListAjaxCall());
+//         return axios.post('/users/dashboard')
+//             .then(result => {
+//                 dispatch(loadDashBoardSuccess(result.data));
+//             }).catch(error => {
+//                 dispatch(ajaxListCallError(error));
+//                 throw(error);
+//             });
+//     }
+// }
 
 

@@ -9,7 +9,7 @@ const PublicRoute = ({ component: Component, userInfo: userInfo, ...rest }) => (
         {...rest}
         render={props =>
             !_.isEmpty(userInfo) ? (
-                <Redirect to="/dashboard" />
+                <Redirect to="/" />
             ) : (
                 <Component {...props} />
             )

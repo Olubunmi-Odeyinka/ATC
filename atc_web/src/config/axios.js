@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {BaseUrl} from './constants/urls';
-import {JWT_LOCAL_KEY} from "./constants/utils";
+import {JWT_LOCAL_KEY, USER_INFO} from "./constants/utils";
 
 const dataApi = axios.create({
     baseURL: BaseUrl
@@ -32,14 +32,16 @@ dataApi.interceptors.response.use(response =>{
     return Promise.reject(error); //push error to the calling code
 });
 
-export function setAuthorizationToken(token) {
+export function setAuthorizationToken(token, login) {
     if(token){
         dataApi.defaults.headers.common['authorization'] = token;
         localStorage.setItem(JWT_LOCAL_KEY, token);
+        localStorage.setItem(USER_INFO, login);
     }else {
         if(localStorage[JWT_LOCAL_KEY]) {
             delete dataApi.defaults.headers.common['authorization'];
-         localStorage.removeItem(JWT_LOCAL_KEY);
+            localStorage.removeItem(JWT_LOCAL_KEY);
+            localStorage.removeItem(USER_INFO);
         }
     }
 }

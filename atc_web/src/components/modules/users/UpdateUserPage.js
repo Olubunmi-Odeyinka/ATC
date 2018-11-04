@@ -5,15 +5,15 @@ import {withFormik} from 'formik';
 import Yup from 'yup';
 import {bindActionCreators} from 'redux';
 import * as userActions from '../../../actions/userActions';
-import * as lookUpsAction from '../../../actions/lookupsActions';
-import GeneralForm from '../../common/form/FormBase';
+//import * as lookUpsAction from '../../../actions/lookupsActions';
+//import GeneralForm from '../../common/form/FormBase';
 import * as operation from '../../../config/constants/operationTypes';
-import {systemCodesFormattedForDropdown} from '../../common/utilities/selectors';
+//import {systemCodesFormattedForDropdown} from '../../common/utilities/selectors';
 import toastr from 'toastr';
 import _ from 'underscore';
 
 
-export class ManageUserPage extends React.Component {
+export class UpdateUserPage extends React.Component {
 
     state = {
         formRootObjectName: 'user',
@@ -143,7 +143,7 @@ export class ManageUserPage extends React.Component {
             }
         }
 
-        this.props.lookUpsAction.loadRoles();
+        //this.props.lookUpsAction.loadRoles();
     }
 
     redirect =(successMessage) => {
@@ -158,19 +158,16 @@ export class ManageUserPage extends React.Component {
 
         //setValues
         return (
-        <GeneralForm
-            formState={{...this.state}}
-            lookUps={{'UserRole': this.props.accessRoles
-                , 'IsInactive': [{value: true, text:'Not Active'}, {value:false, text: 'Active'}, {value:'_defaultValue_', text: 'Active'}]}}
-            fields={this.fieldsDefinition}
-            operation={this.props.match.params.operator}
-            //formikProps={this.props.}
-            //tableData={this.props.user.UserDetails}
-            // addOrRemoveRow={this.addOrRemoveRow}
-            // updateSpreadData= {this.updateSpreadData}
-            thisRef={this}
-            {...props}
-        />
+            <span>Hi</span>
+        // <GeneralForm
+        //     formState={{...this.state}}
+        //     lookUps={{'UserRole': this.props.accessRoles
+        //         , 'IsInactive': [{value: true, text:'Not Active'}, {value:false, text: 'Active'}, {value:'_defaultValue_', text: 'Active'}]}}
+        //     fields={this.fieldsDefinition}
+        //     operation={this.props.match.params.operator}
+        //     thisRef={this}
+        //     {...props}
+        // />
     );}
     theReadonlyForm = withFormik({
         mapPropsToValues({user}){
@@ -277,30 +274,30 @@ export class ManageUserPage extends React.Component {
     }
 }
 
-ManageUserPage.propTypes = {
+UpdateUserPage.propTypes = {
     user: PropTypes.object.isRequired,
     //genres: PropTypes.array.isRequired,
-    lookUpsAction: PropTypes.object.isRequired,
+    //lookUpsAction: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
 };
 
 //Pull in the React Router context so router is available on this.context.router.
-ManageUserPage.contextTypes = {
+UpdateUserPage.contextTypes = {
     router: PropTypes.object
 };
 
 function mapStateToProps(state, ownProps) {
     return {
         user: state.user,
-        accessRoles: systemCodesFormattedForDropdown(state.accessRoles)
+        //accessRoles: systemCodesFormattedForDropdown(state.accessRoles)
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        lookUpsAction: bindActionCreators(lookUpsAction, dispatch),
+        //lookUpsAction: bindActionCreators(lookUpsAction, dispatch),
         actions: bindActionCreators(userActions, dispatch),
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageUserPage);
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateUserPage);

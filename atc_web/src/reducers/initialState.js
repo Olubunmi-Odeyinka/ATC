@@ -1,4 +1,4 @@
-import {JWT_LOCAL_KEY} from "../config/constants/utils";
+import {JWT_LOCAL_KEY, USER_INFO} from "../config/constants/utils";
 let ajaxCallCount = 0
 if(localStorage[JWT_LOCAL_KEY]) {ajaxCallCount = 1;}
 export default {

@@ -7,12 +7,14 @@ import homePage from './modules/home/HomePage';
 import NotFoundPage from './NotFoundPage';
 import Header from './common/page/header/Header';
 import Footer from './common/page/footer/Footer';
-import dashBoard from './modules/home/DashBoard';
+// import dashBoard from './modules/home/DashBoard';
 
 import createUserPage from './modules/home/CreateUserPage';
 import loginPage from './modules/home/LoginPage';
 import PrivateRoute from "./routers/PrivateRoute";
 import PublicRoute from "./routers/PublicRoute";
+import { UsersPage } from './modules/users/UsersPage';
+import { UpdateUserPage } from './modules/users/UpdateUserPage';
 
 
 // This is a class-based component because the current
@@ -55,7 +57,8 @@ class AppLayout extends React.Component {
                 <Route exact={true} path="/" component={homePage} />
                 <PublicRoute path="/login" component={loginPage} />
                 <PublicRoute path="/user/create" component={createUserPage} />
-                <PrivateRoute path="/dashboard" component={dashBoard} />
+                <PrivateRoute path="/users" component={UsersPage} />
+                <PrivateRoute path="/user/update" component={UpdateUserPage} />
 
                 <Route component={NotFoundPage} />
             </Switch>

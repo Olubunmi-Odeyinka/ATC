@@ -14,7 +14,7 @@ export class LoginPage extends React.Component {
 
     redirect =(successMessage) => {
         toastr.success(successMessage);
-        this.props.history.push('/users');
+        this.props.history.push('/');
     }
 
     user = {username: '', password: ''};
