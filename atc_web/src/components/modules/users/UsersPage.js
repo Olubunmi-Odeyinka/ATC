@@ -93,12 +93,7 @@ export class UsersPage extends React.Component {
                             // show the loading overlay
                             this.setState({loading: true})
                             // fetch your data
-                            axios.get('/users', {
-                              page: state.page,
-                              pageSize: state.pageSize,
-                              sorted: state.sorted,
-                              filtered: state.filtered
-                            })
+                            axios.get('/users', {})
                               .then((res) => {
                                 // Update react-table
                                 this.setState({

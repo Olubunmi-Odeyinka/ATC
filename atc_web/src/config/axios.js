@@ -3,7 +3,8 @@ import {BaseUrl} from './constants/urls';
 import {JWT_LOCAL_KEY, USER_INFO} from "./constants/utils";
 
 const dataApi = axios.create({
-    baseURL: BaseUrl
+    baseURL: BaseUrl,
+    headers: {'Access-Control-Request-Method': `POST`, 'Origin':'http://localhost:'}
 });
 
 dataApi.interceptors.request.use(request =>{
@@ -38,7 +39,10 @@ dataApi.interceptors.response.use(response =>{
 
 export function setAuthorizationToken(token, login, logInInfoStatus) {
     if(token){
-        dataApi.defaults.headers.common['authorization'] = `Bearer ${token}`;
+        dataApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        // dataApi.headers['Access-Control-Request-Method'] = 'POST';
+        //{headers: {"Access-Control-Request-Method":'POST'}}
+        dataApi.defaults.headers.post['Access-Control-Request-Method'] = `POST`;
         localStorage.setItem(JWT_LOCAL_KEY, token);
         if(logInInfoStatus){
             localStorage.setItem(USER_INFO, login);
@@ -47,7 +51,7 @@ export function setAuthorizationToken(token, login, logInInfoStatus) {
         }
     }else {
         if(localStorage[JWT_LOCAL_KEY]) {
-            delete dataApi.defaults.headers.common['authorization'];
+            delete dataApi.defaults.headers.common['Authorization'];
             localStorage.removeItem(JWT_LOCAL_KEY);
             localStorage.removeItem(USER_INFO);
         }
