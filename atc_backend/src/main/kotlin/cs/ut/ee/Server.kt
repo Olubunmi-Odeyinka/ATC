@@ -58,7 +58,7 @@ object Server {
 
             install(CORS) {
                 method(HttpMethod.Options)
-                header(HttpHeaders.XForwardedProto)
+                header(HttpHeaders.Authorization)
                 anyHost()
                 allowCredentials = true
                 maxAge = Duration.ofDays(1)
