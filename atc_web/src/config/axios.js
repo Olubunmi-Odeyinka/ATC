@@ -3,8 +3,7 @@ import {BaseUrl} from './constants/urls';
 import {JWT_LOCAL_KEY, USER_INFO} from "./constants/utils";
 
 const dataApi = axios.create({
-    baseURL: BaseUrl,
-    headers: {'Access-Control-Request-Method': `POST`, 'Origin':'http://localhost:'}
+    baseURL: BaseUrl
 });
 
 dataApi.interceptors.request.use(request =>{
@@ -40,9 +39,7 @@ dataApi.interceptors.response.use(response =>{
 export function setAuthorizationToken(token, login, logInInfoStatus) {
     if(token){
         dataApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        // dataApi.headers['Access-Control-Request-Method'] = 'POST';
-        //{headers: {"Access-Control-Request-Method":'POST'}}
-        dataApi.defaults.headers.post['Access-Control-Request-Method'] = `POST`;
+        dataApi.defaults.headers.common['Access-Control-Allow-Headers'] = 'X-Requested-With,Content-Type,Accept,Origin';
         localStorage.setItem(JWT_LOCAL_KEY, token);
         if(logInInfoStatus){
             localStorage.setItem(USER_INFO, login);
