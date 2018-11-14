@@ -13,7 +13,10 @@ import axios from '../../../config/axios';
 export class UsersPage extends React.Component {
 
     state = {
-        itemUrl:'/user'
+        itemUrl:'/user',
+        data: [],
+        pages: -1,
+        loading: false
     };
 
     columns = [
@@ -65,12 +68,12 @@ export class UsersPage extends React.Component {
     // }
 
     redirectToAddUserPage=()=> {
-        this.props.history.push('/user/create');
+        this.props.history.push('/users/create');
     }
 
     render=()=> {
         //const {users} = this.props;
-        console.log(this.props);
+        console.log(this.state);
         return (
             <div className="m-2 card">
                 <div className="card-header clearfix">
@@ -81,30 +84,27 @@ export class UsersPage extends React.Component {
                 </div>
                 <div className="card-block">
                     <ReactTable
-                        manual
-                        data={this.props.users} 
-                        style={{'text-align': 'center'}}
-                        columns={this.columns}
-                        className="-striped -highlight"
-                        pages={this.props.pages} // Display the total number of pages
-                        loading={this.props.loading} // Display the loading overlay when we need it
+                        data={this.state.data} // should default to []
+                        pages={this.state.pages} // should default to -1 (which means we don't know how many pages we have)
+                        loading={this.state.loading}
+                        manual // informs React Table that you'll be handling sorting and pagination server-side
                         loadingText={<Spinner/>}
+                        columns={this.columns}
                         onFetchData={(state, instance) => {
                             // show the loading overlay
                             this.setState({loading: true})
                             // fetch your data
-                            axios.get('/users', {})
+                            axios.get('/users')
                               .then((res) => {
                                 // Update react-table
+                                //debugger
                                 this.setState({
-                                  data: res.data.rows,
-                                  pages: res.data.pages,
+                                  data: res.data,
+                                  pages: 1,
                                   loading: false
                                 })
                               })
                           }}
-                        filterable
-                        defaultPageSize={10} 
                     />
                 </div>
                 <div className="card-footer bg-dark">

@@ -56,9 +56,9 @@ class AppLayout extends React.Component {
             <Switch className="d-block">
                 <Route exact={true} path="/" component={homePage} />
                 <PublicRoute path="/login" component={loginPage} />
-                <PublicRoute path="/user/create" component={createUserPage} />
+                <PublicRoute path="/users/create" component={createUserPage} />
                 <PrivateRoute path="/users" component={UsersPage} />
-                <PrivateRoute path="/user/update" component={UpdateUserPage} />
+                <PrivateRoute path="/users/update" component={UpdateUserPage} />
 
                 <Route component={NotFoundPage} />
             </Switch>
